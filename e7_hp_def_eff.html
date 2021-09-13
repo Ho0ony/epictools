@@ -1,0 +1,229 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title></title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="googlebot" content="noindex, nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+  <script
+    type="text/javascript"
+    src="//code.jquery.com/jquery-3.4.1.slim.js"
+    
+  ></script>
+
+
+      <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+
+
+  <script id="insert"></script>
+
+
+</head>
+<body>
+    <div class="columns">
+  <div class="column">
+    <div class="field">
+      <label class="label">기준데미지</label>
+      <div class="control">
+        <input class="input" type="number" name="base-dmg" id="base-dmg" value="5000000" />
+      </div>
+    </div>
+  </div>
+  <div class="column">
+    <div class="field">
+      <label class="label">케릭터체력</label>
+      <div class="control">
+        <input class="input" type="number" name="base-hp" id="base-hp" value="5450" />
+      </div>
+    </div>
+  </div>
+  <div class="column">
+    <div class="field">
+      <label class="label">케릭터방어</label>
+      <div class="control">
+        <input class="input" type="number" name="base-def" id="base-def" value="798" />
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="columns">
+  <div class="column">
+    <div class="field">
+      <label class="label">방어력</label>
+      <div class="control">
+        <input class="input" type="number" name="last-def" id="last-def" value="1500" />
+      </div>
+    </div>
+  </div>
+  <div class="column">
+    <div class="field">
+      <label class="label">체력</label>
+      <div class="control">
+        <input class="input" type="number" name="last-hp" id="last-hp" value="18000" />
+      </div>
+    </div>
+  </div>
+  <div class="column">
+    <div class="field">
+      <label class="label">방%↔체%</label>
+      <div class="control">
+        <input class="input" type="number" name="swap-per" id="swap-per" value="10" />
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="field is-grouped">
+  <div class="control">
+    <button id="calc" class="button is-link">계산하기</button>
+  </div>
+</div>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th></th>
+      <th>기준</th>
+      <th>방→체</th>
+      <th>체→방</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>체력</td>
+      <td id="r-hp-last">0 <span id="r-hp-last-p"></span></td>
+      <td id="r-hp-d2h">0 <span id="r-hp-d2h-p"></span></td>
+      <td id="r-hp-h2d">0 <span id="r-hp-h2d-p"></span></td>
+    </tr>
+    <tr>
+      <td>방어</td>
+      <td id="r-def-last">0 <span id="r-def-last-p"></span></td>
+      <td id="r-def-d2h">0 <span id="r-def-d2h-p"></span></td>
+      <td id="r-def-h2d">0 <span id="r-def-h2d-p"></span></td>
+    </tr>
+    <tr>
+      <td>받는데미지</td>
+      <td id="r-dmg-last">0</td>
+      <td id="r-dmg-d2h">0</td>
+      <td id="r-dmg-h2d">0</td>
+    </tr>
+    <tr>
+      <td>체력/데미지</td>
+      <td id="r-hpdmg-last">0</td>
+      <td id="r-hpdmg-d2h">0</td>
+      <td id="r-hpdmg-h2d">0</td>
+    </tr>
+  </tbody>
+</table>
+
+
+<div class="select">
+  <select>
+    <option>Select dropdown</option>
+    <option>With options</option>
+  </select>
+</div>
+
+<label class="select">
+
+  <input name="hp-to-def" value="10" />
+</label>
+
+
+    <script type="text/javascript">//<![CDATA[
+
+
+var baseDmg = $("input[name=base-dmg");
+var baseDef = $("input[name=base-def");
+var baseHp  = $("input[name=base-hp");
+var lastDef = $("input[name=last-def");
+var lastHp  = $("input[name=last-hp");
+
+var lastDmg = $("#last-dmg");
+var hpPerDmg= $("#hp-per-dmg");
+var hpPer   = $("#hp-per");
+var defPer  = $("#def-per");
+
+
+function t(name, val) {
+  if(val==undefined) return $("#"+name).text()
+  return $("#"+name).text(val)
+}
+function v(name, val) {
+  if(val==undefined) return $("#"+name).val()
+  return $("#"+name).val(val)
+}
+function r(v, n) {
+  if(n==undefined) n = 1
+  return Math.round(10**n * v)/10**n
+}
+
+function calcDmg() {
+  base_dmg = v("base-dmg")
+  swap_per = v("swap-per") / 100;
+
+  hpPer.text(Math.round(100*lastHp.val() / baseHp.val(), 1)+"%")
+  defPer.text(Math.round(100*lastDef.val() / baseDef.val(),1)+"%")
+
+  base_hp = v("base-hp");
+  base_def = v("base-def");
+
+  last_hp = v("last-hp");
+  last_def = v("last-def");
+  hp_per = last_hp / base_hp;
+  def_per = last_def / base_def;
+  dmg = r(base_dmg / ((last_def-300)+1), 0);
+
+  t("r-hp-last", last_hp )
+  t("r-hp-last-p", "("+ r(100*hp_per) +"%)")
+  t("r-def-last", last_def )
+  t("r-def-last-p", "("+ r(100*def_per) +"%)")
+  t("r-dmg-last", dmg)
+  t("r-hpdmg-last", r(last_hp/dmg,2))
+
+  // hp to def
+  h2d_hp_per = hp_per - swap_per;
+  h2d_def_per = def_per + swap_per;
+  h2d_hp = base_hp * (h2d_hp_per)
+  h2d_def = base_def * (h2d_def_per)
+  t("r-hp-h2d", r(h2d_hp) )
+  t("r-hp-h2d-p", "("+ r(100*h2d_hp_per) +"%)")
+  t("r-def-h2d", r(h2d_def))
+  t("r-def-h2d-p", "("+ r(100*h2d_def_per) +"%)")
+  dmg = r(base_dmg / ((h2d_def-300)+1), 0);
+  t("r-dmg-h2d", dmg)
+  t("r-hpdmg-h2d", r(h2d_hp/dmg,2))
+
+
+  // def to hp
+  d2h_hp_per = hp_per + swap_per;
+  d2h_def_per = def_per - swap_per;
+  d2h_hp = base_hp * (d2h_hp_per)
+  d2h_def = base_def * (d2h_def_per)
+  t("r-hp-d2h", r(d2h_hp) )
+  t("r-hp-d2h-p", "("+ r(100*d2h_hp_per) +"%)")
+  t("r-def-d2h", r(d2h_def))
+  t("r-def-d2h-p", "("+ r(100*d2h_def_per) +"%)")
+  dmg = r(base_dmg / ((d2h_def-300)+1), 0);
+  t("r-dmg-d2h", dmg)
+  t("r-hpdmg-d2h", r(d2h_hp/dmg,2))
+
+}
+
+$("#calc").click(calcDmg)
+
+
+
+
+
+  //]]></script>
+
+
+</body>
+</html>

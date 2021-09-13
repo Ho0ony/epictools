@@ -146,14 +146,14 @@
         last_def = v("last-def");
         hp_per = last_hp / base_hp;
         def_per = last_def / base_def;
-        dmg = r(base_dmg / ((last_def/300)+1), 0);
-        hpdmg_last = last_hp/dmg;
+        last_dmg = r(base_dmg / ((last_def/300)+1), 0);
+        hpdmg_last = last_hp/last_dmg;
       
         t("r-hp-last", last_hp )
         t("r-hp-last-p", "("+ r(100*hp_per) +"%)")
         t("r-def-last", last_def )
         t("r-def-last-p", "("+ r(100*def_per) +"%)")
-        t("r-dmg-last", dmg)
+        t("r-dmg-last", last_dmg)
         t("r-hpdmg-last", r(hpdmg_last,2))
       
         // hp to def
@@ -165,13 +165,13 @@
         t("r-hp-h2d-p", "("+ r(100*h2d_hp_per) +"%)")
         t("r-def-h2d", r(h2d_def))
         t("r-def-h2d-p", "("+ r(100*h2d_def_per) +"%)")
-        dmg = r(base_dmg / ((h2d_def/300)+1), 0);
-        hpdmg_h2d = h2d_hp/dmg;
-        t("r-dmg-h2d", dmg)
+        h2d_dmg = r(base_dmg / ((h2d_def/300)+1), 0);
+        hpdmg_h2d = h2d_hp/h2d_dmg;
+        t("r-dmg-h2d", h2d_dmg)
         t("r-hpdmg-h2d", r(hpdmg_h2d,2))
         
-          $("#r-hpdmg-h2d").removeClass("red green")
-        if(hpdmg_h2d< hpdmg_last) {
+        $("#r-hpdmg-h2d").removeClass("red green")
+        if(hpdmg_h2d < hpdmg_last) {
           $("#r-hpdmg-h2d").addClass("red");
         } else if (hpdmg_h2d > hpdmg_last) {
           $("#r-hpdmg-h2d").addClass("green")
@@ -187,12 +187,13 @@
         t("r-hp-d2h-p", "("+ r(100*d2h_hp_per) +"%)")
         t("r-def-d2h", r(d2h_def))
         t("r-def-d2h-p", "("+ r(100*d2h_def_per) +"%)")
-        dmg = r(base_dmg / ((d2h_def/300)+1), 0);
-        hpdmg_d2h = d2h_hp/dmg;
-        t("r-dmg-d2h", dmg)
-        t("r-hpdmg-d2h", r(d2h_hp/dmg,2))
+        d2h_dmg = r(base_dmg / ((d2h_def/300)+1), 0);
+        hpdmg_d2h = d2h_hp/d2h_dmg;
+        t("r-dmg-d2h", d2h_dmg)
+        t("r-hpdmg-d2h", r(hpdmg_d2h,2))
+        
         $("#r-hpdmg-d2h").removeClass("red green")
-        if(dhpdmg_d2h < hpdmg_last) {
+        if(hpdmg_d2h < hpdmg_last) {
           $("#r-hpdmg-d2h").addClass("red");
         } else if (hpdmg_d2h > hpdmg_last) {
           $("#r-hpdmg-d2h").addClass("green")

@@ -147,13 +147,14 @@
         hp_per = last_hp / base_hp;
         def_per = last_def / base_def;
         dmg = r(base_dmg / ((last_def/300)+1), 0);
+        hpdmg_last = last_hp/dmg;
       
         t("r-hp-last", last_hp )
         t("r-hp-last-p", "("+ r(100*hp_per) +"%)")
         t("r-def-last", last_def )
         t("r-def-last-p", "("+ r(100*def_per) +"%)")
         t("r-dmg-last", dmg)
-        t("r-hpdmg-last", r(last_hp/dmg,2))
+        t("r-hpdmg-last", r(hpdmg_last,2))
       
         // hp to def
         h2d_hp_per = hp_per - swap_per;
@@ -165,12 +166,14 @@
         t("r-def-h2d", r(h2d_def))
         t("r-def-h2d-p", "("+ r(100*h2d_def_per) +"%)")
         dmg = r(base_dmg / ((h2d_def/300)+1), 0);
+        hpdmg_h2d = h2d_hp/dmg;
         t("r-dmg-h2d", dmg)
-        t("r-hpdmg-h2d", r(h2d_hp/dmg,2))
+        t("r-hpdmg-h2d", r(hpdmg_h2d,2))
+        
           $("#r-hpdmg-h2d").removeClass("red green")
-        if(h2d_hp/dmg < last_hp/dmg) {
+        if(hpdmg_h2d< hpdmg_last) {
           $("#r-hpdmg-h2d").addClass("red");
-        } else if (h2d_hp/dmg > last_hp/dmg) {
+        } else if (hpdmg_h2d > hpdmg_last) {
           $("#r-hpdmg-h2d").addClass("green")
         } 
       
@@ -185,12 +188,13 @@
         t("r-def-d2h", r(d2h_def))
         t("r-def-d2h-p", "("+ r(100*d2h_def_per) +"%)")
         dmg = r(base_dmg / ((d2h_def/300)+1), 0);
+        hpdmg_d2h = d2h_hp/dmg;
         t("r-dmg-d2h", dmg)
         t("r-hpdmg-d2h", r(d2h_hp/dmg,2))
         $("#r-hpdmg-d2h").removeClass("red green")
-        if(d2h_hp/dmg < last_hp/dmg) {
+        if(dhpdmg_d2h < hpdmg_last) {
           $("#r-hpdmg-d2h").addClass("red");
-        } else if (d2h_hp/dmg > last_hp/dmg) {
+        } else if (hpdmg_d2h > hpdmg_last) {
           $("#r-hpdmg-d2h").addClass("green")
         } 
 

@@ -167,6 +167,12 @@
         dmg = r(base_dmg / ((h2d_def-300)+1), 0);
         t("r-dmg-h2d", dmg)
         t("r-hpdmg-h2d", r(h2d_hp/dmg,2))
+          $("#r-hpdmg-h2d").removeClass("red green")
+        if(h2d_hp/dmg < last_hp/dmg) {
+          $("#r-hpdmg-h2d").addClass("red");
+        } else if (h2d_hp/dmg > last_hp/dmg) {
+          $("#r-hpdmg-h2d").addClass("green")
+        } 
       
       
         // def to hp
@@ -181,7 +187,13 @@
         dmg = r(base_dmg / ((d2h_def-300)+1), 0);
         t("r-dmg-d2h", dmg)
         t("r-hpdmg-d2h", r(d2h_hp/dmg,2))
-      
+        $("#r-hpdmg-d2h").removeClass("red green")
+        if(d2h_hp/dmg < last_hp/dmg) {
+          $("#r-hpdmg-d2h").addClass("red");
+        } else if (d2h_hp/dmg > last_hp/dmg) {
+          $("#r-hpdmg-d2h").addClass("green")
+        } 
+
       }
       
       $("#calc").click(calcDmg)

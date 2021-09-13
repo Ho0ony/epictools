@@ -17,7 +17,7 @@
           <div class="field">
             <label class="label">기준데미지</label>
             <div class="control">
-              <input class="input" type="number" name="base-dmg" id="base-dmg" value="5000000" />
+              <input class="input" type="number" name="base-dmg" id="base-dmg" value="45000" />
             </div>
           </div>
         </div>
@@ -146,7 +146,7 @@
         last_def = v("last-def");
         hp_per = last_hp / base_hp;
         def_per = last_def / base_def;
-        dmg = r(base_dmg / ((last_def-300)+1), 0);
+        dmg = r(base_dmg / ((last_def/300)+1), 0);
       
         t("r-hp-last", last_hp )
         t("r-hp-last-p", "("+ r(100*hp_per) +"%)")
@@ -164,7 +164,7 @@
         t("r-hp-h2d-p", "("+ r(100*h2d_hp_per) +"%)")
         t("r-def-h2d", r(h2d_def))
         t("r-def-h2d-p", "("+ r(100*h2d_def_per) +"%)")
-        dmg = r(base_dmg / ((h2d_def-300)+1), 0);
+        dmg = r(base_dmg / ((h2d_def/300)+1), 0);
         t("r-dmg-h2d", dmg)
         t("r-hpdmg-h2d", r(h2d_hp/dmg,2))
           $("#r-hpdmg-h2d").removeClass("red green")
@@ -184,7 +184,7 @@
         t("r-hp-d2h-p", "("+ r(100*d2h_hp_per) +"%)")
         t("r-def-d2h", r(d2h_def))
         t("r-def-d2h-p", "("+ r(100*d2h_def_per) +"%)")
-        dmg = r(base_dmg / ((d2h_def-300)+1), 0);
+        dmg = r(base_dmg / ((d2h_def/300)+1), 0);
         t("r-dmg-d2h", dmg)
         t("r-hpdmg-d2h", r(d2h_hp/dmg,2))
         $("#r-hpdmg-d2h").removeClass("red green")

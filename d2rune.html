@@ -7,7 +7,7 @@
   src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
   integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI="
   crossorigin="anonymous"></script>
-	<title>Diablo II v0.3 | Rune search</title>
+	<title>Diablo II v0.3.1 | Rune search</title>
 </head>
 <body>
 
@@ -626,7 +626,7 @@ function search() {
   var etcTag = [];
 
   $(".tags .tag").each((i, e) => {
-    t = $(e).text().replace("✖", "");
+    t = $(e).text().toLowerCase().replace("✖", "");
     if ($(e).hasClass("socket")) {
       sockTag.push(t.replace(" ","").replace("홈", ""))
     }

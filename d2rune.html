@@ -7,10 +7,13 @@
   src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
   integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI="
   crossorigin="anonymous"></script>
-  <title>Diablo II v0.3.3 | Rune search</title>
+  <title>Diablo II v0.4.0 | Rune search</title>
 </head>
 <body>
 
+<div class="rune-info"><b class="close">X</b>
+  <h2 class="title"></h2>
+<pre class="text"></pre></div>
 <div class="search-wrapper">
 <input name="search" class="search" placeholder="Search ...">
 <div class="tags">
@@ -21,7 +24,11 @@
 
 
 <script type="text/javascript">
-var rune = ["nef", "tir", "el", "ith", "eth", "tal", "ral", "ort", "amn", "thul", "hel", "sol", "shael", "io", "dol", "lo", "lum", "ko", "fal", "lem", "eld", "ist", "um", "pul", "mal", "gul", "vex", "ohm", "lo", "sur", "ber", "jah", "cham", "zod"];
+var rune = {el:{num:1,ko:"엘",en:"El"},eld:{num:2,ko:"엘드",en:"Eld"},tir:{num:3,ko:"티르",en:"Tir"},nef:{num:4,ko:"네프",en:"Nef"},eth:{num:5,ko:"에드",en:"Eth"},ith:{num:6,ko:"아이드",en:"Ith"},tal:{num:7,ko:"탈",en:"Tal"},ral:{num:8,ko:"랄",en:"Ral"},ort:{num:9,ko:"오르트",en:"Ort"},thul:{num:10,ko:"주울",en:"Thul"},amn:{num:11,ko:"앰",en:"Amn"},sol:{num:12,ko:"솔",en:"Sol"},shael:{num:13,ko:"샤엘",en:"Sheal"},dol:{num:14,ko:"돌",en:"Dol"},hel:{num:15,ko:"헬",en:"Hel"},io:{num:16,ko:"이오",en:"Io"},lum:{num:17,ko:"룸",en:"Lum"},ko:{num:18,ko:"코",en:"Ko"},fal:{num:19,ko:"팔",en:"Pal"},lem:{num:20,ko:"렘",en:"Lem"},pul:{num:21,ko:"풀",en:"Pul"},um:{num:22,ko:"우움",en:"Um"},mal:{num:23,ko:"말",en:"Mal"},ist:{num:24,ko:"아이스트",en:"Ist"},gul:{num:25,ko:"굴",en:"Gul"},vex:{num:26,ko:"벡스",en:"Vex"},ohm:{num:27,ko:"오움",en:"Ohm"},lo:{num:28,ko:"로",en:"Lo"},sur:{num:29,ko:"수르",en:"Sur"},ber:{num:30,ko:"베르",en:"Ber"},jah:{num:31,ko:"자",en:"Jah"},cham:{num:32,ko:"참",en:"Cham"},zod:{num:33,ko:"조드",en:"Zod"}};
+var runeinfo = ["엘(El) x3 = 엘드(Eld) x1","엘드(Eld) x3 = 티르(Tir) x1","티르(Tir) x3 = 네프(Nef) x1","네프(Nef) x3 = 에드(Eth) x1","에드(Eth) x3 = 아이드(Ith) x1","아이드(Ith) x3 = 탈(Tal) x1","탈(Tal) x3 = 랄(Ral) x1","랄(Ral) x3 = 오르트(Ort) x1","오르트(Ort) x3 = 주울(Thul) x1","주울(Thul) x3 + 최하급 토파즈x1 = 앰(Amn) x1","앰(Amn) x3 + 최하급 자수정x1 = 솔(Sol) x1","솔(Sol) x3 + 최하급 사파이어x1 = 샤엘(Sheal) x1","샤에(Sheal) x3 + 최하급 루비x1 = 돌(Dol) x1","돌(Dol) x3 + 최하급 에메랄드x1 = 헬(Hel) x1","헬(Hel) x3 + 최하급 다이아몬드x1 = 이오(Io) x1","이오(Io) x3 + 하급 토파즈x1 = 룸(Lum) x1","룸(Lum) x3 + 하급 자수정x1 = 코(Ko) x1","코(Ko) x3 + 하급 사파이어x1 = 팔(Pal) x1","팔(Fal) x3 + 하급 루비x1 = 렘(Lem) x1","렘(Lem) x3 + 하급 에메랄드x1 = 풀(Pul) x1","풀(Pul) x2 + 하급 다이아몬드x1 = 우움(Um) x1","우움(Um) x2 + 토파즈x1 = 말(Mal) x1","말(Mal) x2 + 자수정x1 = 아이스트(Ist) x1","아이스트(Ist) x2 + 사파이어x1 = 굴(Gul) x1","굴(Gul) x2 + 루비x1 = 벡스(Vex) x1","벡스(Vex) x2 + 에메랄드x1 = 오움(Ohm) x1","오움(Ohm) x2 + 다이아몬드x1 = 로(Lo) x1","로(Lo) x2 + 상급 토파즈x1 = 수르(Sur) x1","수르(Sur) x2 + 상급 자수정x1 = 베르(Ber) x1","베르(Ber) x2 + 상급 사파이어x1 = 자(Jah) x1","자(Jah) x2 + 상급 루비x1 = 참(Cham) x1","참(Cham) x2 + 상급 에메랄드x1 = 조드(Zod) x1"];
+
+var type = {rune:"룬", socket:"소켓", etc:""}
+
 var runeword = [
 {
     level: 13,
@@ -612,11 +619,31 @@ $.each(runeword, (i, e) => {
   var lv = $("<span>").addClass("level").text("Lv." + e.level).appendTo(title)
   var recipe = $("<div>").addClass("runeword-recipe").appendTo(item);
   $.each(e.recipe, (i2, e2) => {
-    r = $("<span>").addClass("rune").text(e2).appendTo(recipe);
+    r = $("<span>").data("value", e2).addClass("rune").text("["+rune[e2].num+"]"+rune[e2].ko +"("+rune[e2].en+")").appendTo(recipe);
   })
   var gear = $("<div>").addClass("runeword-gear").text(e.gear).appendTo(item);
   var desc = $("<pre>").addClass("runeword-desc").text(e.desc).appendTo(item);
 })
+
+$(".runeword-recipe .rune").click(function(e) {
+  var k = $(this).data("value");
+  var title = ("No."+rune[k].num+" "+rune[k].ko +"("+rune[k].en+")");
+  var infotxt = "";
+  $.each(runeinfo, function(i, e) {
+    console.log(e)
+    if(e.toLowerCase().includes("("+k.toLowerCase()+")")) {
+      infotxt += e +"\n"
+    }
+  })
+  $(".rune-info .title").text( title.trim() )
+  $(".rune-info .text").text( infotxt.trim() )
+  $(".rune-info").show()
+})
+$(".rune-info .close").click(()=>{
+  $(".rune-info").hide()
+})
+
+$(".rune-info").hide()
 
 function search() {
 
@@ -633,15 +660,15 @@ function search() {
 
 
   $(".tags .tag").each((i, e) => {
-    t = $(e).text().toLowerCase().replace("✖", "");
+    t = $(e);
     if ($(e).hasClass("socket")) {
-      sockTag.push(t.replace(" ","").replace("홈", ""))
+      sockTag.push(t.data("value"))
     }
     if ($(e).hasClass("rune")) {
-      runeTag.push(t.replace(" ","").replace("룬", ""))
+      runeTag.push(t.data("value"))
     }
     if ($(e).hasClass("etc")) {
-      etcTag.push(t)
+      etcTag.push(t.data("value"))
     }
   })
 
@@ -654,6 +681,8 @@ function search() {
     var runeFound = true;
     var etcFound = etcTag.length == 0;
 
+
+
     $.each(sockTag, (a, b) => {
       if (data.gear.includes("[" + b + "]")) {
         sockFound |= true;
@@ -663,7 +692,7 @@ function search() {
     });
 
     $.each(runeTag, (a, b) => {
-      console.log(data.recipe, b)
+      // console.log(data.recipe, b)
       if (data.recipe.includes(b)) {
         runeFound &= true;
       } else {
@@ -673,6 +702,7 @@ function search() {
 
 
     $.each(etcTag, (a, b) => {
+    console.log(data.gear, b, data.gear.includes(b));
       if (data.name.includes(b) || data.gear.includes(b) || data.desc.includes(b)) {
         etcFound |= true;
       } else {
@@ -692,27 +722,36 @@ function search() {
 
 $(".search").on("keyup", function(e) {
   var key = $(this).val();
-  var tag = null;
-  if (Number(key)) {
-    tag = $("<span>").addClass("tag socket").data("socket", key).text(key + "홈 ✖").appendTo($(".tags"))
+
+  if(key.endsWith(" ") && key.trim().length==0) {
     $(this).val("");
-  } else if (rune.includes(key.toLowerCase())) {
-    tag = $("<span>").addClass("tag rune").data("rune", key).text(key + "룬 ✖").appendTo($(".tags"))
+    return
+  }
+
+  var tag = $("<span>").addClass("tag").data("value", key.trim()).addClass("tag");
+
+  if (Number(key)) {
+    tag.addClass("socket").data("type", "socket")
+    $(this).val("");
+  } else if (rune[key.toLowerCase()]!=undefined) {
+    tag.addClass("rune").data("type", "rune").data("text", rune[key.toLowerCase()].ko +"("+rune[key.toLowerCase()].en+")")
     $(this).val("");
   } else if (key.endsWith(" ")) {
-    tag = $("<span>").addClass("tag etc").text(key.replace(" ", "") + "✖").appendTo($(".tags"))
+    tag.addClass("etc").data("type", "etc")
     $(this).val("");
+  } else {
+    tag = null;
   }
 
   if (tag != null) {
+    tag.text((tag.data("text")||tag.data("value"))+ (type[tag.data("type")]||"")+" ✖").appendTo($(".tags"))
+    $(this).val("");
     tag.click(function() {
       $(this).remove()
       search();
     })
     search();
   }
-
-
 })
 
 $(".search").focus();
@@ -748,6 +787,8 @@ body {
 }
 
 .runeword-desc {
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
   margin: 3px 0px;
 }
 
@@ -755,7 +796,7 @@ body {
   font-size: 10pt;
   border: 1px solid #999;
   border-radius: 5px;
-  padding: 1px 5px;
+  padding: 1px 5px 3px 5px;
   margin-right: 5px;
   background: #DCDADA;
 }
@@ -797,7 +838,7 @@ body {
 }
 
 .has-tag+#runeword {
-  margin-top: 30px;
+  margin-top: 35px;
 }
 
 .hide {
@@ -805,8 +846,8 @@ body {
 }
 
 .tag {
-  font-size: 8pt;
-  padding: 1px 5px;
+  font-size: 9pt;
+  padding: 3px 7px;
   border: 1px solid #999;
   border-radius: 15px;
   float: left;
@@ -814,6 +855,28 @@ body {
 }
 .tag.socket{
   border: 1px solid #469b99;
+}
+.rune-info {
+  width: calc(100% - 25px);
+  background: #eee;
+  border: 2px solid #333;
+  padding: 3px 5px;
+  height: 100px;
+  position: fixed;
+  bottom: 0px;
+  right: 5px;
+}
+.rune-info .title {
+  padding: 0;
+  margin: 0 0 3px 0;
+}
+.rune-info .close {
+  font-size: 16pt;
+  position: relative;
+  padding: 5px;
+  right: 3px;
+  display: inline-block;
+  float: right;
 }
 </style>
 

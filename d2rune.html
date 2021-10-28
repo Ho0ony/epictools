@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta charset="utf-8">
-	<script
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8">
+  <script
   src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
   integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI="
   crossorigin="anonymous"></script>
-	<title>Diablo II v0.3.2 | Rune search</title>
+  <title>Diablo II v0.3.3 | Rune search</title>
 </head>
 <body>
 
@@ -625,6 +625,13 @@ function search() {
   var sockTag = [];
   var etcTag = [];
 
+  if($(".tags").children().length>0) {
+    $(".search-wrapper").addClass("has-tag")
+  } else {
+    $(".search-wrapper").removeClass("has-tag")
+  }
+
+
   $(".tags .tag").each((i, e) => {
     t = $(e).text().toLowerCase().replace("✖", "");
     if ($(e).hasClass("socket")) {
@@ -709,10 +716,14 @@ $(".search").on("keyup", function(e) {
 })
 
 $(".search").focus();
-	
+  
 </script>
 
 <style type="text/css">
+body {
+  margin: 0px;
+}
+
 #runeword{
   list-style: none;
   padding: 40px 5px 0 5px;
@@ -771,17 +782,22 @@ $(".search").focus();
   border-radius: 5px;
   margin-top:10px;
   margin-bottom:5px;
-  width: 70%;
+  width: calc(100% - 33px);
   margin-left:auto;
   display: inline-block;
   padding: 5px 10px 5px 10px;
 }
 .search-wrapper {
   width: 100%;
-  background: #FFF;
+  background: #DDD;
   display: inline-block;
   position:fixed;
+  padding: 0px 5px 5px 5px;
   top:0px;
+}
+
+.has-tag+#runeword {
+  margin-top: 30px;
 }
 
 .hide {

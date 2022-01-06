@@ -1,0 +1,174 @@
+<html><head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title></title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="googlebot" content="noindex, nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
+
+
+  <style id="compiled-css" type="text/css">
+      .t1 {
+  min-width: 120px
+}
+
+.t2 {
+  min-width: 100px;
+}
+
+tr {
+  border-bottom: 1px solid #333;
+}
+
+#in, #answer {
+  width:500px;
+  height:100px;
+}
+    /* EOS */
+  </style>
+
+  <script id="insert"></script>
+
+
+    <script src="/js/stringify.js?80e56a799f97c7863ef2aa2731fedafae31dd3fa" charset="utf-8"></script>
+    <script>
+      const customConsole = (w) => {
+        const pushToConsole = (payload, type) => {
+          w.parent.postMessage({
+            console: {
+              payload: stringify(payload),
+              type:    type
+            }
+          }, "*")
+        }
+
+        w.onerror = (message, url, line, column) => {
+          // the line needs to correspond with the editor panel
+          // unfortunately this number needs to be altered every time this view is changed
+          line = line - 70
+          if (line < 0){
+            pushToConsole(message, "error")
+          } else {
+            pushToConsole(`[${line}:${column}] ${message}`, "error")
+          }
+        }
+
+        let console = (function(systemConsole){
+          return {
+            log: function(){
+              let args = Array.from(arguments)
+              pushToConsole(args, "log")
+              systemConsole.log.apply(this, args)
+            },
+            info: function(){
+              let args = Array.from(arguments)
+              pushToConsole(args, "info")
+              systemConsole.info.apply(this, args)
+            },
+            warn: function(){
+              let args = Array.from(arguments)
+              pushToConsole(args, "warn")
+              systemConsole.warn.apply(this, args)
+            },
+            error: function(){
+              let args = Array.from(arguments)
+              pushToConsole(args, "error")
+              systemConsole.error.apply(this, args)
+            },
+            system: function(arg){
+              pushToConsole(arg, "system")
+            },
+            clear: function(){
+              systemConsole.clear.apply(this, {})
+            },
+            time: function(){
+              let args = Array.from(arguments)
+              systemConsole.time.apply(this, args)
+            },
+            assert: function(assertion, label){
+              if (!assertion){
+                pushToConsole(label, "log")
+              }
+
+              let args = Array.from(arguments)
+              systemConsole.assert.apply(this, args)
+            }
+          }
+        }(window.console))
+
+        window.console = { ...window.console, ...console }
+
+        console.system("Running fiddle")
+      }
+
+      if (window.parent){
+        customConsole(window)
+      }
+    </script>
+</head>
+<body style="cursor: url(&quot;chrome-extension://jlgkpaicikihijadgifklkbpdajbkhjo/image/cursors/011.png&quot;), default;">
+    <textarea id="in">
+[ㄱ] [오후 1:31] 사과 오렌지 당근
+[ㄴ] [오후 1:31] 괜찮네요 당근
+[ㄷ] [오후 1:31] 오렌지 당근
+[ㄷ] [오후 1:32] 테스트 당근 오렌지
+[ㄹ] [오후 1:32] 코스모스 
+[ㅁ] [오후 1:32] 장미
+
+</textarea>
+
+<textarea id="answer">
+사과 당근 오렌지
+</textarea>
+
+
+<table>
+<thead>
+  <tr><th class="t1">name</th>
+  <th class="t2">time</th>
+  <th class="t3">match</th>
+  <th class="t4">text</th>
+</tr></thead>
+<tbody id="tb">
+<tr><td>콩즈러버 30개</td><td>오후 1:17</td><td>0</td><td>1번 문제 (선착순 1명)일렉트로 픽셀 콩즈 NFT에 들어있는 음원의 DJ 6명을 한번에 나열해주세요!2번 문제 (선착순 1명)일렉트로 픽셀 콩즈 로드맵을 보고 빈칸을 채워주세요' _ _ _ _ _ 에서 런웨이 패션쇼 진행'  빈칸을 채워, FULL 문장으로 써 주셔야 합니다. (띄어쓰기 상관없음)3번 문제 (선착순 1명)일렉트로 픽셀 콩즈 민팅 일정은?정답 예시 문구) 0000년 0월 0일 저녁 00시0을 채워서 전부 써주세요 (띄어쓰기 상관없음)4번 문제 (선착순 1명)일렉트로 픽셀 콩즈 민팅시에 한번(트랜잭션)에 몇 개를 구매할수 있을까요?5번 문제 (선착순 1명)지금 계시는 좋은친구들 기반의 꿀통 정보공유 오픈채팅방의 개설일은?정답 예시 문구) 0000년 0월 00일0을 채워서 전부 써주세요 (띄워쓰기 상관없음)</td></tr><tr><td>콩즈러버 30개</td><td>오후 1:21</td><td>6</td><td>1번 문제 정답DAN3Y / ARKINS / STICKYBASS / KIRIN / HAECHI / BLOXX2번 문제 정답크립토복셀에서 런웨이 패션쇼 진행3번 문제 정답2022년 1월 9일 저녁 10시4번 문제 정답5개5번 문제 정답2021년 9월 11일</td></tr><tr><td>도비</td><td>오후 1:31</td><td>0</td><td>픽셀콩즈</td></tr><tr><td>도비</td><td>오후 1:31</td><td>0</td><td>괜찮네요</td></tr><tr><td>도비</td><td>오후 1:31</td><td>0</td><td>이미 협업따셧넼 ㅋ</td></tr><tr><td>JoyL</td><td>오후 1:32</td><td>0</td><td>저도 해보고싶지만~ 다른 화리를 시도해보겠습니다</td></tr><tr><td>도비</td><td>오후 1:32</td><td>0</td><td>도와드릴까요 ?</td></tr><tr><td>푸른미르</td><td>오후 1:32</td><td>0</td><td>뭔가 답을 다 알고나니</td></tr><tr><td>푸른미르</td><td>오후 1:33</td><td>0</td><td>참여하면 안되겠군여</td></tr></tbody>
+</table>
+
+    <script type="text/javascript">//<![CDATA[
+
+
+var txt = $("#in").text();
+txt = txt.replaceAll(/\r|\n/g, '')
+txt = txt.replaceAll(/(\[.+?\]\s*\[오[전후]\s*\d+:\d+\])/g, '\n$1')
+m = txt.matchAll(/\[(.+?)\]\s*\[(오[전후]\s*\d+:\d+)\]\s*(.+)/g)
+
+var ans = $("#answer").text().trim().split("\n");
+
+
+var n = null;
+while( (n=m.next())!=null && !n.done) {
+ var c = 0;
+ var x = {name:n.value[1], time:n.value[2], text:n.value[3]}
+ 
+ $.each(ans, (i,e)=> {
+ 	if(x.text.includes(e)) {
+  console.log(e)
+  c++;
+  }
+ })
+ x.match = c;
+ $("<tr>").append($("<td>").text(x.name))
+         .append($("<td>").text(x.time))
+         .append($("<td>").text(x.match))
+         .append($("<td>").text(x.text))
+         .appendTo("#tb");
+ console.log(x)
+}
+
+
+  //]]></script>
+
+
+</body></html>

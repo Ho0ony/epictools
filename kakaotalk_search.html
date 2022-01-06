@@ -22,7 +22,9 @@
 tr {
   border-bottom: 1px solid #333;
 }
-
+#do {
+  padding: 10px 30px;
+    }
 #in, #answer {
   width:500px;
   height:100px;
@@ -124,7 +126,7 @@ tr {
 사과 당근 오렌지
 </textarea>
 
-
+  <button id="do">작동 !!</button>
 <table>
 <thead>
   <tr><th class="t1">name</th>
@@ -133,12 +135,11 @@ tr {
   <th class="t4">text</th>
 </tr></thead>
 <tbody id="tb">
-<tr><td>콩즈러버 30개</td><td>오후 1:17</td><td>0</td><td>1번 문제 (선착순 1명)일렉트로 픽셀 콩즈 NFT에 들어있는 음원의 DJ 6명을 한번에 나열해주세요!2번 문제 (선착순 1명)일렉트로 픽셀 콩즈 로드맵을 보고 빈칸을 채워주세요' _ _ _ _ _ 에서 런웨이 패션쇼 진행'  빈칸을 채워, FULL 문장으로 써 주셔야 합니다. (띄어쓰기 상관없음)3번 문제 (선착순 1명)일렉트로 픽셀 콩즈 민팅 일정은?정답 예시 문구) 0000년 0월 0일 저녁 00시0을 채워서 전부 써주세요 (띄어쓰기 상관없음)4번 문제 (선착순 1명)일렉트로 픽셀 콩즈 민팅시에 한번(트랜잭션)에 몇 개를 구매할수 있을까요?5번 문제 (선착순 1명)지금 계시는 좋은친구들 기반의 꿀통 정보공유 오픈채팅방의 개설일은?정답 예시 문구) 0000년 0월 00일0을 채워서 전부 써주세요 (띄워쓰기 상관없음)</td></tr><tr><td>콩즈러버 30개</td><td>오후 1:21</td><td>6</td><td>1번 문제 정답DAN3Y / ARKINS / STICKYBASS / KIRIN / HAECHI / BLOXX2번 문제 정답크립토복셀에서 런웨이 패션쇼 진행3번 문제 정답2022년 1월 9일 저녁 10시4번 문제 정답5개5번 문제 정답2021년 9월 11일</td></tr><tr><td>도비</td><td>오후 1:31</td><td>0</td><td>픽셀콩즈</td></tr><tr><td>도비</td><td>오후 1:31</td><td>0</td><td>괜찮네요</td></tr><tr><td>도비</td><td>오후 1:31</td><td>0</td><td>이미 협업따셧넼 ㅋ</td></tr><tr><td>JoyL</td><td>오후 1:32</td><td>0</td><td>저도 해보고싶지만~ 다른 화리를 시도해보겠습니다</td></tr><tr><td>도비</td><td>오후 1:32</td><td>0</td><td>도와드릴까요 ?</td></tr><tr><td>푸른미르</td><td>오후 1:32</td><td>0</td><td>뭔가 답을 다 알고나니</td></tr><tr><td>푸른미르</td><td>오후 1:33</td><td>0</td><td>참여하면 안되겠군여</td></tr></tbody>
 </table>
 
     <script type="text/javascript">//<![CDATA[
 
-
+function do() {
 var txt = $("#in").text();
 txt = txt.replaceAll(/\r|\n/g, '')
 txt = txt.replaceAll(/(\[.+?\]\s*\[오[전후]\s*\d+:\d+\])/g, '\n$1')
@@ -166,7 +167,9 @@ while( (n=m.next())!=null && !n.done) {
          .appendTo("#tb");
  console.log(x)
 }
-
+}
+      
+      $("#do").click(do)
 
   //]]></script>
 

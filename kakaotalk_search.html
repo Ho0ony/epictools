@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 
   <style id="compiled-css" type="text/css">
@@ -32,86 +32,8 @@ tr {
     /* EOS */
   </style>
 
-  <script id="insert"></script>
-
-
-    <script src="/js/stringify.js?80e56a799f97c7863ef2aa2731fedafae31dd3fa" charset="utf-8"></script>
-    <script>
-      const customConsole = (w) => {
-        const pushToConsole = (payload, type) => {
-          w.parent.postMessage({
-            console: {
-              payload: stringify(payload),
-              type:    type
-            }
-          }, "*")
-        }
-
-        w.onerror = (message, url, line, column) => {
-          // the line needs to correspond with the editor panel
-          // unfortunately this number needs to be altered every time this view is changed
-          line = line - 70
-          if (line < 0){
-            pushToConsole(message, "error")
-          } else {
-            pushToConsole(`[${line}:${column}] ${message}`, "error")
-          }
-        }
-
-        let console = (function(systemConsole){
-          return {
-            log: function(){
-              let args = Array.from(arguments)
-              pushToConsole(args, "log")
-              systemConsole.log.apply(this, args)
-            },
-            info: function(){
-              let args = Array.from(arguments)
-              pushToConsole(args, "info")
-              systemConsole.info.apply(this, args)
-            },
-            warn: function(){
-              let args = Array.from(arguments)
-              pushToConsole(args, "warn")
-              systemConsole.warn.apply(this, args)
-            },
-            error: function(){
-              let args = Array.from(arguments)
-              pushToConsole(args, "error")
-              systemConsole.error.apply(this, args)
-            },
-            system: function(arg){
-              pushToConsole(arg, "system")
-            },
-            clear: function(){
-              systemConsole.clear.apply(this, {})
-            },
-            time: function(){
-              let args = Array.from(arguments)
-              systemConsole.time.apply(this, args)
-            },
-            assert: function(assertion, label){
-              if (!assertion){
-                pushToConsole(label, "log")
-              }
-
-              let args = Array.from(arguments)
-              systemConsole.assert.apply(this, args)
-            }
-          }
-        }(window.console))
-
-        window.console = { ...window.console, ...console }
-
-        console.system("Running fiddle")
-      }
-
-      if (window.parent){
-        customConsole(window)
-      }
-    </script>
 </head>
-<body style="cursor: url(&quot;chrome-extension://jlgkpaicikihijadgifklkbpdajbkhjo/image/cursors/011.png&quot;), default;">
+<body>
     <textarea id="in">
 [ㄱ] [오후 1:31] 사과 오렌지 당근
 [ㄴ] [오후 1:31] 괜찮네요 당근
@@ -123,7 +45,9 @@ tr {
 </textarea>
 
 <textarea id="answer">
-사과 당근 오렌지
+사과
+당근
+오렌지
 </textarea>
 
   <button id="do">작동 !!</button>
@@ -139,37 +63,34 @@ tr {
 
     <script type="text/javascript">//<![CDATA[
 
-function do() {
-var txt = $("#in").text();
-txt = txt.replaceAll(/\r|\n/g, '')
-txt = txt.replaceAll(/(\[.+?\]\s*\[오[전후]\s*\d+:\d+\])/g, '\n$1')
-m = txt.matchAll(/\[(.+?)\]\s*\[(오[전후]\s*\d+:\d+)\]\s*(.+)/g)
+      $("#do").on("click", function() {
+          $("#tb").empty()
+          var txt = $("#in").val();
+          txt = txt.replaceAll(/\r|\n/g, '')
+          txt = txt.replaceAll(/(\[.+?\]\s*\[오[전후]\s*\d+:\d+\])/g, '\n$1')
+          m = txt.matchAll(/\[(.+?)\]\s*\[(오[전후]\s*\d+:\d+)\]\s*(.+)/g)
 
-var ans = $("#answer").text().trim().split("\n");
+          var ans = $("#answer").val().trim().split("\n");
 
 
-var n = null;
-while( (n=m.next())!=null && !n.done) {
- var c = 0;
- var x = {name:n.value[1], time:n.value[2], text:n.value[3]}
- 
- $.each(ans, (i,e)=> {
- 	if(x.text.includes(e)) {
-  console.log(e)
-  c++;
-  }
- })
- x.match = c;
- $("<tr>").append($("<td>").text(x.name))
-         .append($("<td>").text(x.time))
-         .append($("<td>").text(x.match))
-         .append($("<td>").text(x.text))
-         .appendTo("#tb");
- console.log(x)
-}
-}
-      
-      $("#do").click(do)
+          var n = null;
+          while( (n=m.next())!=null && !n.done) {
+           var c = 0;
+           var x = {name:n.value[1], time:n.value[2], text:n.value[3]}
+           
+           $.each(ans, (i,e)=> {
+            if(x.text.includes(e)) {
+            c++;
+            }
+           })
+           x.match = c;
+           $("<tr>").append($("<td>").text(x.name))
+                   .append($("<td>").text(x.time))
+                   .append($("<td>").text(x.match))
+                   .append($("<td>").text(x.text))
+                   .appendTo("#tb");
+          }
+      })
 
   //]]></script>
 

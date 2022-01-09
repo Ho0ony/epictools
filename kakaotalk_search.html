@@ -2,97 +2,142 @@
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <title></title>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  <meta name="robots" content="noindex, nofollow">
-  <meta name="googlebot" content="noindex, nofollow">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-
   <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
   <style id="compiled-css" type="text/css">
-      .t1 {
-  min-width: 120px
-}
-
-.t2 {
-  min-width: 100px;
-}
-
-tr {
-  border-bottom: 1px solid #333;
-}
-#do {
-  padding: 10px 30px;
+    .top textarea.form-control {
+      height: 100%;
     }
-#in, #answer {
-  width:500px;
-  height:100px;
-}
-    /* EOS */
   </style>
-
 </head>
 <body>
-    <textarea id="in">
-[ㄱ] [오후 1:31] 사과 오렌지 당근
-[ㄴ] [오후 1:31] 괜찮네요 당근
-[ㄷ] [오후 1:31] 오렌지 당근
-[ㄷ] [오후 1:32] 테스트 당근 오렌지
-[ㄹ] [오후 1:32] 코스모스 
-[ㅁ] [오후 1:32] 장미
+  <div class="container my-5">
+    <div class="row top">
+      <div class="col-md-6 mt-1">
+        <div class="form-floating">
+          <textarea class="form-control" placeholder="카카오톡 대화 내용을 붙여넣기 해주세요." id="message-input" style="resize: none"> </textarea>
+          <label for="in">카카오톡 대화 내용</label>
+        </div>
+      </div>
+      <div class="col-md-3 mt-1">
+        <div class="form-floating">
+          <textarea class="form-control" placeholder="대화 내용 검색 필터" id="filter-msg" style="resize: none"> </textarea>
+          <label for="in">대화 내용 검색 필터</label>
+        </div>
+      </div>
+      <div class="col-md-3 mt-1">
+        <div class="form-floating">
+          <textarea class="form-control" placeholder="닉네임" id="filter-name" style="resize: none"> </textarea>
+          <label for="in">닉네임 검색 필터</label>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-2">
+      <div class="col">
+        <div class="form-check form-switch">
+          <input class="form-check-input" checked="true" type="checkbox" role="switch" id="ignore-emoji-switch">
+          <label class="form-check-label" for="ignore-emoji-switch">이모티콘 제외</label>
+        </div>
+        <div class="form-check form-switch">
+          <input class="form-check-input" checked="true" type="checkbox" role="switch" id="ignore-bot-switch">
+          <label class="form-check-label" for="ignore-bot-switch">방장봇 제외</label>
+        </div>
+        <div class="form-check form-switch">
+          <input class="form-check-input" checked="true" type="checkbox" role="switch" id="ignore-del-switch">
+          <label class="form-check-label" for="ignore-del-switch">삭제된 메세지 제외</label>
+        </div>
+        <button class="btn btn-light btn-outline-dark" id="msg-input-btn">내용 입력하기</button>
+      </div>
+      <div class="col">
+        <button class="btn btn-outline-success" id="filter-refresh-btn">적용하기</button>
+      </div>
+    </div>
+  </div>
+  
 
-</textarea>
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <table class="table">
+          <thead>
+            <th style="width:70px">순서</th>
+            <th style="width:200px">이름</th>
+            <th style="width:100px">시간</th>
+            <th>텍스트</th>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 
-<textarea id="answer">
-사과
-당근
-오렌지
-</textarea>
-
-  <button id="do">작동 !!</button>
-<table>
-<thead>
-  <tr><th class="t1">name</th>
-  <th class="t2">time</th>
-  <th class="t3">match</th>
-  <th class="t4">text</th>
-</tr></thead>
-<tbody id="tb">
-</table>
-
-    <script type="text/javascript">//<![CDATA[
-
-      $("#do").on("click", function() {
-          $("#tb").empty()
-          var txt = $("#in").val();
-          txt = txt.replaceAll(/\r|\n/g, '')
-          txt = txt.replaceAll(/(\[.+?\]\s*\[오[전후]\s*\d+:\d+\])/g, '\n$1')
-          m = txt.matchAll(/\[(.+?)\]\s*\[(오[전후]\s*\d+:\d+)\]\s*(.+)/g)
-
-          var ans = $("#answer").val().trim().split("\n");
+  <script type="text/javascript">
+    var data = [];
 
 
-          var n = null;
-          while( (n=m.next())!=null && !n.done) {
-           var c = 0;
-           var x = {name:n.value[1], time:n.value[2], text:n.value[3]}
-           
-           $.each(ans, (i,e)=> {
-            if(x.text.includes(e)) {
-            c++;
-            }
-           })
-           x.match = c;
-           $("<tr>").append($("<td>").text(x.name))
-                   .append($("<td>").text(x.time))
-                   .append($("<td>").text(x.match))
-                   .append($("<td>").text(x.text))
-                   .appendTo("#tb");
+    $("#msg-input-btn").on("click", function() {
+      $(".table tbody").empty();
+      data = [];
+
+      var txt = $("#message-input").val();
+      txt = txt.replaceAll(/\r|\n/g, '');
+      txt = txt.replaceAll(/(\[.+?\]\s*\[오[전후]\s*\d+:\d+\])/g, '\n$1');
+      m = txt.matchAll(/\[(.+?)\]\s*\[(오[전후]\s*\d+:\d+)\]\s*(.+)/g);
+
+      var ignoreBot = $("#ignore-bot-switch").is(":checked");
+      var ignoreEmoji = $("#ignore-emoji-switch").is(":checked");
+      var ignoreDel = $("#ignore-del-switch").is(":checked");
+
+      var index = 0;
+      while( (n=m.next())!=null && !n.done) {
+        var x = {name:n.value[1], time:n.value[2], text:n.value[3], index: index++}
+        if((ignoreBot && x.name==="방장봇")
+          || (ignoreEmoji && x.text==="이모티콘")
+          || (ignoreDel && x.text==="삭제된 메시지입니다.")) {
+          continue;
+        }
+        data.push(x);
+        $(`<tr id="row-${x.index}">`)
+          .append($("<td>").text(x.index))
+          .append($("<td>").text(x.name))
+          .append($("<td>").text(x.time))
+          .append($("<td class='msg'>").text(x.text))
+          .appendTo($(".table tbody"));
+      }
+    });
+
+    $("#filter-refresh-btn").on("click", function() {
+      var msgFilters = $.map($("#filter-msg").val().replaceAll("\n\n+|^\s*$","").split("\n"), (e)=>e.trim()).filter(e=>e);
+      var nameFilters = $.map($("#filter-name").val().replaceAll("\n\n+|^\s*$","").split("\n"), (e)=>e.trim()).filter(e=>e);
+
+      $.each(data, (i,e)=>{
+        var visible = false;
+        
+        var isMsgFiltered = msgFilters.length==0;
+        for(var j=0; j<msgFilters.length; j++) {
+          if(e.text.includes(msgFilters[j])) {
+            isMsgFiltered = true;
+            break;
           }
-      })
+        }
+        
+        var isNameFiltered = nameFilters.length==0;
+        for(var j=0; j<nameFilters.length; j++) {
+          if(e.name.includes(nameFilters[j])) {
+            isNameFiltered = true;
+            break;
+          }
+        }
 
-  //]]></script>
-
-
-</body></html>
+        if(isMsgFiltered && isNameFiltered) {
+          $("#row-"+e.index).show()
+        } else {
+          $("#row-"+e.index).hide()
+        }
+      });
+    });
+  </script>
+</body>
+</html>
